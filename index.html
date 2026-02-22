@@ -8,5 +8,36 @@
   <body>
     <h1>Hello World 👋</h1>
     <p>This is a simple static GitHub Pages test.</p>
+    <p id="uuid-text">UUID: no proporcionado</p>
+    <audio id="bg-audio" loop autoplay>
+      <source src="./audio.opus" type="audio/ogg; codecs=opus" />
+      Tu navegador no soporta audio HTML5.
+    </audio>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const uuid = params.get("uuid");
+      const uuidTextElement = document.getElementById("uuid-text");
+      const bgAudio = document.getElementById("bg-audio");
+
+      if (uuid && uuidTextElement) {
+        uuidTextElement.textContent = `UUID: ${uuid}`;
+      }
+
+      if (bgAudio) {
+        bgAudio.play().catch(() => {
+          const resumeAudio = () => {
+            bgAudio.play().catch(() => {});
+            document.removeEventListener("click", resumeAudio);
+            document.removeEventListener("keydown", resumeAudio);
+            document.removeEventListener("touchstart", resumeAudio);
+          };
+
+          document.addEventListener("click", resumeAudio);
+          document.addEventListener("keydown", resumeAudio);
+          document.addEventListener("touchstart", resumeAudio);
+        });
+      }
+    </script>
   </body>
 </html>
